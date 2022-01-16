@@ -1,2 +1,7 @@
 # plane-in-clouds
-Animation example using Jetpack compose
+Animations example using Jetpack compose
+
+# Roadmap
+
+* Night-mode
+* Turbulence mode!
