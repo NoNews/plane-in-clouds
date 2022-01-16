@@ -16,8 +16,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.alexbykov.aircraftview.R
 import com.alexbykov.aircraftview.ui.theme.BlueLight
-import offsetCloudAnimationAsState
-import offsetPlaneAnimationAsState
+import offsetCloudAnimationDpAsState
+import offsetPlaneAnimationDpAsState
 
 @Composable
 fun AircraftInCloudsScreen(viewModel: PlaneInCloudsViewModel) {
@@ -25,37 +25,36 @@ fun AircraftInCloudsScreen(viewModel: PlaneInCloudsViewModel) {
     val screenState by viewModel.observeState()
     val configuration = LocalConfiguration.current
 
-    val fast: Dp by offsetCloudAnimationAsState(
+    val fastCloudOffset: Dp by offsetCloudAnimationDpAsState(
         cloudState = screenState.animationState,
         screenWidth = configuration.screenWidthDp.dp,
         durationInMillis = 3_500
     )
 
-    val veryFast: Dp by offsetCloudAnimationAsState(
+    val veryFastCloudOffset: Dp by offsetCloudAnimationDpAsState(
         cloudState = screenState.animationState,
         screenWidth = configuration.screenWidthDp.dp,
         durationInMillis = 4_000
     )
 
-    val slow: Dp by offsetCloudAnimationAsState(
+    val slowCloudOffset: Dp by offsetCloudAnimationDpAsState(
         cloudState = screenState.animationState,
         screenWidth = configuration.screenWidthDp.dp,
         durationInMillis = 4_500
     )
 
-    val verySlow: Dp by offsetCloudAnimationAsState(
+    val verySlowCloudOffset: Dp by offsetCloudAnimationDpAsState(
         cloudState = screenState.animationState,
         screenWidth = configuration.screenWidthDp.dp,
         durationInMillis = 7_000
     )
 
-    val normal: Dp by offsetCloudAnimationAsState(
+    val normalCloudOffset: Dp by offsetCloudAnimationDpAsState(
         cloudState = screenState.animationState,
         screenWidth = configuration.screenWidthDp.dp,
         durationInMillis = 3_700
     )
-
-    val planeMoveForwardAnimation: Dp by offsetPlaneAnimationAsState(
+    val planeMoveForwardOffset: Dp by offsetPlaneAnimationDpAsState(
         cloudState = screenState.animationState,
         screenWidth = configuration.screenWidthDp.dp,
         durationInMillis = 5_000
@@ -72,11 +71,11 @@ fun AircraftInCloudsScreen(viewModel: PlaneInCloudsViewModel) {
 
                 screenState.clouds.forEachIndexed { index, cloud ->
                     val animation = when (cloud.cloudAnimation) {
-                        PlaneInCloudsContract.CloudAnimation.VERY_SLOW -> verySlow
-                        PlaneInCloudsContract.CloudAnimation.SLOW -> slow
-                        PlaneInCloudsContract.CloudAnimation.FAST -> fast
-                        PlaneInCloudsContract.CloudAnimation.VERY_FAST -> veryFast
-                        PlaneInCloudsContract.CloudAnimation.NORMAL -> normal
+                        PlaneInCloudsContract.CloudAnimation.VERY_SLOW -> verySlowCloudOffset
+                        PlaneInCloudsContract.CloudAnimation.SLOW -> slowCloudOffset
+                        PlaneInCloudsContract.CloudAnimation.FAST -> fastCloudOffset
+                        PlaneInCloudsContract.CloudAnimation.VERY_FAST -> veryFastCloudOffset
+                        PlaneInCloudsContract.CloudAnimation.NORMAL -> normalCloudOffset
                     }
 
                     val offsetVertical = cloud.verticalOffset
@@ -100,7 +99,7 @@ fun AircraftInCloudsScreen(viewModel: PlaneInCloudsViewModel) {
             contentDescription = "Aircraft",
             modifier = Modifier
                 .size(64.dp)
-                .absoluteOffset(x = planeMoveForwardAnimation)
+                .absoluteOffset(x = planeMoveForwardOffset)
                 .offset(
                     y = 50.dp
                 )

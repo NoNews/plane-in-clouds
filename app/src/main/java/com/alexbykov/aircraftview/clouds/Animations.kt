@@ -7,7 +7,7 @@ import com.alexbykov.aircraftview.clouds.PlaneInCloudsContract
 
 
 @Composable
-fun offsetCloudAnimationAsState(
+fun offsetCloudAnimationDpAsState(
     cloudState: PlaneInCloudsContract.AnimationState,
     screenWidth: Dp,
     durationInMillis: Int
@@ -17,7 +17,7 @@ fun offsetCloudAnimationAsState(
         targetValue = if (cloudState == PlaneInCloudsContract.AnimationState.Idle) {
             screenWidth + 64.dp
         } else {
-            (-74).dp
+            (-100).dp
         },
         animationSpec =
         if (cloudState == PlaneInCloudsContract.AnimationState.Idle) {
@@ -37,7 +37,7 @@ fun offsetCloudAnimationAsState(
 
 
 @Composable
-fun offsetPlaneAnimationAsState(
+fun offsetPlaneAnimationDpAsState(
     cloudState: PlaneInCloudsContract.AnimationState,
     screenWidth: Dp,
     durationInMillis: Int
