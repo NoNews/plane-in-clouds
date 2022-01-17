@@ -16,7 +16,7 @@ class PlaneInCloudsViewModel : ViewModel() {
     fun onClickControlButton() {
         when (state.value.animationState) {
             PlaneInCloudsContract.AnimationState.Animating -> {
-                state.update { oldState ->
+                state.reduce { oldState ->
                     oldState.copy(
                         animationState = PlaneInCloudsContract.AnimationState.Idle,
                         controlButtonText = "Let's fly"
@@ -24,7 +24,7 @@ class PlaneInCloudsViewModel : ViewModel() {
                 }
             }
             PlaneInCloudsContract.AnimationState.Idle -> {
-                state.update { oldState ->
+                state.reduce { oldState ->
                     oldState.copy(
                         animationState = PlaneInCloudsContract.AnimationState.Animating,
                         controlButtonText = "Stop"
@@ -35,7 +35,32 @@ class PlaneInCloudsViewModel : ViewModel() {
     }
 
 
-    private inline fun <T> MutableState<T>.update(
+    fun onClickChangeTheme() {
+        state.reduce { oldState ->
+
+            val changeThemeButtonText: String
+            val newTheme: PlaneInCloudsContract.Theme
+
+            when (oldState.theme) {
+                is PlaneInCloudsContract.Theme.Day -> {
+                    changeThemeButtonText="Night"
+                    newTheme=PlaneInCloudsContract.Theme.Night
+                }
+                is PlaneInCloudsContract.Theme.Night -> {
+                    changeThemeButtonText="Day"
+                    newTheme=PlaneInCloudsContract.Theme.Day
+                }
+            }
+
+            oldState.copy(
+                theme = newTheme,
+                themeChangeText = changeThemeButtonText
+            )
+        }
+    }
+
+
+    private inline fun <T> MutableState<T>.reduce(
         reducer: (currentState: T) -> T
     ) {
         val newState = reducer.invoke(value)

@@ -1,3 +1,4 @@
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
@@ -42,6 +43,7 @@ fun offsetPlaneAnimationDpAsState(
     screenWidth: Dp,
     durationInMillis: Int
 ): State<Dp> {
+
 
     return animateDpAsState(
         targetValue = if (cloudState == PlaneInCloudsContract.AnimationState.Idle) {

@@ -1,5 +1,6 @@
 package com.alexbykov.aircraftview.clouds
 
+import androidx.compose.animation.core.animateValueAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -9,15 +10,22 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.alexbykov.aircraftview.R
-import com.alexbykov.aircraftview.ui.theme.BlueLight
 import offsetCloudAnimationDpAsState
 import offsetPlaneAnimationDpAsState
+
+//Color(0xff29b6f6), the best
+//Color(0xff0d47a1)
+
+
+//Color(0xFF212121), //night
+//Color(0xff1a237e) //night
 
 @Composable
 fun AircraftInCloudsScreen(viewModel: PlaneInCloudsViewModel) {
@@ -60,12 +68,17 @@ fun AircraftInCloudsScreen(viewModel: PlaneInCloudsViewModel) {
         durationInMillis = 5_000
     )
 
+
     Surface(color = Color.White) {
         Column {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(color = BlueLight)
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = screenState.theme.colours
+                        )
+                    )
                     .padding(all = 16.dp)
             ) {
 
@@ -92,6 +105,9 @@ fun AircraftInCloudsScreen(viewModel: PlaneInCloudsViewModel) {
 
             ControlButton(text = screenState.controlButtonText) {
                 viewModel.onClickControlButton()
+            }
+            ControlButton(text = screenState.themeChangeText) {
+                viewModel.onClickChangeTheme()
             }
         }
         Image(

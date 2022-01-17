@@ -51,15 +51,45 @@ interface PlaneInCloudsContract {
                     )
                 ),
                 animationState = AnimationState.Idle,
-                controlButtonText = "Let's fly!"
+                controlButtonText = "Let's fly!",
+                themeChangeText = "Night",
+                theme = Theme.Day
             )
     }
 
     data class ScreenState(
         val clouds: List<Cloud>,
         val animationState: AnimationState = AnimationState.Idle,
-        val controlButtonText: String
+        val controlButtonText: String,
+        val themeChangeText: String,
+        val theme: Theme
     )
+
+    sealed class Theme {
+        abstract val colours: List<Color>
+
+        object Day : Theme() {
+            override val colours: List<Color>
+                get() = listOf(
+                    Color(0xff29b6f6),
+                    Color(0xff81d4fa),
+                    Color(0xffb3e5fc),
+                    Color(0xffe1f5fe),
+                    Color(0xffe0f7fa),
+                    Color.White
+                )
+        }
+
+        object Night : Theme() {
+            override val colours: List<Color>
+                get() = listOf(
+                    Color(0xFF424242),
+                    Color(0xFF616161),
+                    Color(0xff757575),
+                    Color(0xffbdbdbd),
+                )
+        }
+    }
 
     data class Cloud(
         val color: Color,
