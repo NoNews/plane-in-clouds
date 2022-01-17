@@ -62,7 +62,8 @@ interface PlaneInCloudsContract {
         val animationState: AnimationState = AnimationState.Idle,
         val controlButtonText: String,
         val themeChangeText: String,
-        val theme: Theme
+        val theme: Theme,
+        val planeY: Int = 50,
     )
 
     sealed class Theme {

@@ -1,6 +1,7 @@
 package com.alexbykov.aircraftview.clouds
 
-import androidx.compose.animation.core.animateValueAsState
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -19,13 +20,6 @@ import androidx.compose.ui.unit.dp
 import com.alexbykov.aircraftview.R
 import offsetCloudAnimationDpAsState
 import offsetPlaneAnimationDpAsState
-
-//Color(0xff29b6f6), the best
-//Color(0xff0d47a1)
-
-
-//Color(0xFF212121), //night
-//Color(0xff1a237e) //night
 
 @Composable
 fun AircraftInCloudsScreen(viewModel: PlaneInCloudsViewModel) {
@@ -69,6 +63,13 @@ fun AircraftInCloudsScreen(viewModel: PlaneInCloudsViewModel) {
     )
 
 
+    val planeY: Dp by animateDpAsState(
+        targetValue = screenState.planeY.dp,
+        animationSpec = tween(durationMillis = 300)
+    )
+
+
+
     Surface(color = Color.White) {
         Column {
             Column(
@@ -109,6 +110,10 @@ fun AircraftInCloudsScreen(viewModel: PlaneInCloudsViewModel) {
             ControlButton(text = screenState.themeChangeText) {
                 viewModel.onClickChangeTheme()
             }
+
+            ControlButton(text = "Turbulence") {
+                viewModel.onClickTurbulence()
+            }
         }
         Image(
             painter = painterResource(R.drawable.airplane),
@@ -117,7 +122,7 @@ fun AircraftInCloudsScreen(viewModel: PlaneInCloudsViewModel) {
                 .size(64.dp)
                 .absoluteOffset(x = planeMoveForwardOffset)
                 .offset(
-                    y = 50.dp
+                    y = planeY
                 )
         )
     }
