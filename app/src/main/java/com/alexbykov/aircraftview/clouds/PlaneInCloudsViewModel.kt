@@ -14,8 +14,6 @@ class PlaneInCloudsViewModel : ViewModel() {
 
 
     private var shakingJob: Job? = null
-    private var shakingJobX: Job? = null
-
 
     fun observeState(): State<PlaneInCloudsContract.ScreenState> = state
 
