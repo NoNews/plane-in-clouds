@@ -14,6 +14,7 @@ class PlaneInCloudsViewModel : ViewModel() {
 
 
     private var shakingJob: Job? = null
+    private var shakingJobX: Job? = null
 
 
     fun observeState(): State<PlaneInCloudsContract.ScreenState> = state
@@ -45,25 +46,28 @@ class PlaneInCloudsViewModel : ViewModel() {
 
             val changeThemeButtonText: String
             val newTheme: PlaneInCloudsContract.Theme
+            val clouds: List<PlaneInCloudsContract.Cloud>
 
             when (oldState.theme) {
                 is PlaneInCloudsContract.Theme.Day -> {
-                    changeThemeButtonText = "Night"
-                    newTheme = PlaneInCloudsContract.Theme.Night
-                }
-                is PlaneInCloudsContract.Theme.Night -> {
                     changeThemeButtonText = "Day"
+                    newTheme = PlaneInCloudsContract.Theme.London
+                    clouds = PlaneInCloudsContract.londonClouds()
+                }
+                is PlaneInCloudsContract.Theme.London -> {
+                    changeThemeButtonText = "London"
                     newTheme = PlaneInCloudsContract.Theme.Day
+                    clouds = PlaneInCloudsContract.dayClouds()
                 }
             }
 
             oldState.copy(
                 theme = newTheme,
-                themeChangeText = changeThemeButtonText
+                themeChangeText = changeThemeButtonText,
+                clouds = clouds
             )
         }
     }
-
 
     private inline fun <T> MutableState<T>.reduce(
         reducer: (currentState: T) -> T
@@ -82,7 +86,8 @@ class PlaneInCloudsViewModel : ViewModel() {
             return
         }
 
-        shakingJob = CoroutineScope(Dispatchers.Main.immediate).launch {
+        shakingJob = CoroutineScope(Dispatchers.Default).launch {
+
             while (coroutineContext.isActive) {
                 delay(Random.nextLong(300, 500L))
                 state.reduce { oldState ->

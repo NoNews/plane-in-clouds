@@ -10,61 +10,98 @@ interface PlaneInCloudsContract {
     companion object {
         fun createInitialState() =
             ScreenState(
-                clouds = listOf(
-                    Cloud(
-                        color = GrayLight,
-                        height = 20.dp,
-                        width = 50.dp,
-                        cloudAnimation = CloudAnimation.VERY_FAST,
-                        verticalOffset = 4.dp
-                    ),
-
-                    Cloud(
-                        color = Color.White,
-                        height = 10.dp,
-                        width = 40.dp,
-                        cloudAnimation = CloudAnimation.VERY_SLOW,
-                        verticalOffset = 8.dp
-                    ),
-                    Cloud(
-                        color = GrayLight,
-                        height = 20.dp,
-                        width = 50.dp,
-                        cloudAnimation = CloudAnimation.FAST,
-                        verticalOffset = 20.dp
-                    ),
-
-                    Cloud(
-                        color = Color.White,
-                        height = 30.dp,
-                        width = 60.dp,
-                        cloudAnimation = CloudAnimation.SLOW,
-                        verticalOffset = 8.dp
-                    ),
-
-                    Cloud(
-                        color = GrayLight,
-                        height = 40.dp,
-                        width = 70.dp,
-                        cloudAnimation = CloudAnimation.NORMAL,
-                        verticalOffset = 8.dp
-                    )
-                ),
+                clouds = dayClouds(),
                 animationState = AnimationState.Idle,
                 controlButtonText = "Let's fly!",
-                themeChangeText = "Night",
+                themeChangeText = "London",
                 theme = Theme.Day
             )
-    }
 
-    data class ScreenState(
-        val clouds: List<Cloud>,
-        val animationState: AnimationState = AnimationState.Idle,
-        val controlButtonText: String,
-        val themeChangeText: String,
-        val theme: Theme,
-        val planeY: Int = 50,
-    )
+
+        fun londonClouds() = listOf(
+            Cloud(
+                color = Color(0xFFFAFAFA),
+                height = 20.dp,
+                width = 50.dp,
+                cloudAnimation = CloudAnimation.VERY_FAST,
+                verticalOffset = 4.dp
+            ),
+
+            Cloud(
+                color = Color(0xFFFAFAFA),
+                height = 10.dp,
+                width = 40.dp,
+                cloudAnimation = CloudAnimation.VERY_SLOW,
+                verticalOffset = 8.dp
+            ),
+            Cloud(
+                color = Color(0xFFFAFAFA),
+                height = 20.dp,
+                width = 50.dp,
+                cloudAnimation = CloudAnimation.FAST,
+                verticalOffset = 20.dp
+            ),
+
+            Cloud(
+                color = Color(0xFFBDBDBD),
+                height = 30.dp,
+                width = 60.dp,
+                cloudAnimation = CloudAnimation.SLOW,
+                verticalOffset = 8.dp
+            ),
+
+            Cloud(
+                color = Color(0xFF9E9E9E),
+                height = 40.dp,
+                width = 70.dp,
+                cloudAnimation = CloudAnimation.NORMAL,
+                verticalOffset = 8.dp
+            )
+        )
+
+
+        fun dayClouds() = listOf(
+            Cloud(
+                color = GrayLight,
+                height = 20.dp,
+                width = 50.dp,
+                cloudAnimation = CloudAnimation.VERY_FAST,
+                verticalOffset = 4.dp
+            ),
+
+            Cloud(
+                color = Color.White,
+                height = 10.dp,
+                width = 40.dp,
+                cloudAnimation = CloudAnimation.VERY_SLOW,
+                verticalOffset = 8.dp
+            ),
+            Cloud(
+                color = GrayLight,
+                height = 20.dp,
+                width = 50.dp,
+                cloudAnimation = CloudAnimation.FAST,
+                verticalOffset = 20.dp
+            ),
+
+            Cloud(
+                color = Color.White,
+                height = 30.dp,
+                width = 60.dp,
+                cloudAnimation = CloudAnimation.SLOW,
+                verticalOffset = 8.dp
+            ),
+
+            Cloud(
+                color = GrayLight,
+                height = 40.dp,
+                width = 70.dp,
+                cloudAnimation = CloudAnimation.NORMAL,
+                verticalOffset = 8.dp
+            )
+        )
+
+    }
 
     sealed class Theme {
         abstract val colours: List<Color>
@@ -81,16 +118,28 @@ interface PlaneInCloudsContract {
                 )
         }
 
-        object Night : Theme() {
+        object London : Theme() {
             override val colours: List<Color>
                 get() = listOf(
-                    Color(0xFF424242),
-                    Color(0xFF616161),
-                    Color(0xff757575),
-                    Color(0xffbdbdbd),
+                    Color(0xFF9E9E9E),
+                    Color(0xFFBDBDBD),
+                    Color(0xFFE0E0E0),
+                    Color(0xFFEEEEEE),
+                    Color(0xFFF5F5F5),
+                    Color(0xFFFAFAFA),
                 )
         }
     }
+
+    data class ScreenState(
+        val clouds: List<Cloud>,
+        val animationState: AnimationState = AnimationState.Idle,
+        val controlButtonText: String,
+        val themeChangeText: String,
+        val theme: Theme,
+        val planeY: Int = 50,
+        val planeX: Int = 0
+    )
 
     data class Cloud(
         val color: Color,

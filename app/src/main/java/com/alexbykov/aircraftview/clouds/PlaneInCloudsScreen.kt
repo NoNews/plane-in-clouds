@@ -1,6 +1,8 @@
 package com.alexbykov.aircraftview.clouds
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -11,8 +13,10 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
@@ -68,6 +72,13 @@ fun AircraftInCloudsScreen(viewModel: PlaneInCloudsViewModel) {
         animationSpec = tween(durationMillis = 300)
     )
 
+    val planeDegrees by animateFloatAsState(targetValue = screenState.planeX.toFloat())
+
+    val skyColors = mutableListOf<Color>()
+    screenState.theme.colours.forEach { color ->
+        val stateColor: Color by animateColorAsState(targetValue = color)
+        skyColors.add(stateColor)
+    }
 
 
     Surface(color = Color.White) {
@@ -77,7 +88,8 @@ fun AircraftInCloudsScreen(viewModel: PlaneInCloudsViewModel) {
                     .fillMaxWidth()
                     .background(
                         brush = Brush.verticalGradient(
-                            colors = screenState.theme.colours
+                            colors = skyColors,
+                            tileMode = TileMode.Clamp,
                         )
                     )
                     .padding(all = 16.dp)
@@ -92,27 +104,27 @@ fun AircraftInCloudsScreen(viewModel: PlaneInCloudsViewModel) {
                         PlaneInCloudsContract.CloudAnimation.NORMAL -> normalCloudOffset
                     }
 
-                    val offsetVertical = cloud.verticalOffset
-
                     CloudView(
                         modifier = Modifier
                             .height(cloud.height)
-                            .absoluteOffset(x = animation, y = offsetVertical)
+                            .absoluteOffset(x = animation)
                             .width(cloud.width),
                         color = cloud.color
                     )
                 }
             }
 
-            ControlButton(text = screenState.controlButtonText) {
-                viewModel.onClickControlButton()
-            }
-            ControlButton(text = screenState.themeChangeText) {
-                viewModel.onClickChangeTheme()
-            }
+            Row {
+                ControlButton(text = screenState.controlButtonText) {
+                    viewModel.onClickControlButton()
+                }
+                ControlButton(text = screenState.themeChangeText) {
+                    viewModel.onClickChangeTheme()
+                }
 
-            ControlButton(text = "Turbulence") {
-                viewModel.onClickTurbulence()
+                ControlButton(text = "Turbulence") {
+                    viewModel.onClickTurbulence()
+                }
             }
         }
         Image(
@@ -121,6 +133,7 @@ fun AircraftInCloudsScreen(viewModel: PlaneInCloudsViewModel) {
             modifier = Modifier
                 .size(64.dp)
                 .absoluteOffset(x = planeMoveForwardOffset)
+                .rotate(planeDegrees)
                 .offset(
                     y = planeY
                 )
@@ -135,7 +148,7 @@ private fun ControlButton(
 ) {
     OutlinedButton(
         onClick = onClick,
-        modifier = Modifier.padding(16.dp)
+        modifier = Modifier.padding(4.dp)
     ) {
         Text(text)
     }
